@@ -5,6 +5,9 @@ import java.awt.*;
 
 public class bildbetrachter extends JFrame {
 
+    //ACHTUNG ICON SOLL EIN ARRAY WERDEN!!!!!!!!!!!!!!!!!!!!!!!!
+
+
     //DATENFELDER
     private JPanel panelWest;
     private JPanel panelCenter;
