@@ -1,15 +1,81 @@
 package com.sabel;
 
 import javax.swing.*;
+import java.awt.*;
 
-public class bildbetrachter {
+public class bildbetrachter extends JFrame {
 
-JRadioButton
+    //DATENFELDER
+    private JPanel panelWest;
+    private JPanel panelCenter;
+    private JPanel panelSouth;
+    private JLabel label;
+    private Icon icon;
+    private JRadioButton[] radioButtons;
+    private ButtonGroup buttonGroup;
+    private JButton buttonForward;
+    private JButton buttonBackwared;
+    private JScrollPane scrollPane;
 
 
+    public bildbetrachter() {
+        super("Bilder");
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setSize(400, 400);
+        this.initComponents();
+        //this.initEvents();
+        this.setVisible(true);
+
+    }
+
+    private void initComponents() {
+
+        //INIT PANELs
+        panelWest = new JPanel();
+        panelWest.setLayout(new BoxLayout(panelWest, BoxLayout.Y_AXIS));
+        panelCenter = new JPanel();
+        panelSouth = new JPanel();
 
 
+        //INIT ButtonGroup and Array and Icon and Scrollpane
+        buttonGroup = new ButtonGroup();
+        radioButtons = new JRadioButton[4];
+        icon = new ImageIcon("bild1");
+        label = new JLabel();
+        label.setIcon(icon);
+        scrollPane = new JScrollPane(label);
+        buttonForward = new JButton("Nächstes Bild");
+        buttonBackwared = new JButton("Vorheriges Bild");
 
+
+        //ADD Panels to JFrame
+        this.add(panelWest, BorderLayout.WEST);
+        this.add(panelCenter);
+        this.add(panelSouth, BorderLayout.SOUTH);
+
+
+        //INIT RadioButtons
+        for (int i = 0; i < 4; i++) {
+            radioButtons[i] = new JRadioButton("Bild" + (i + 1));
+            panelWest.add(radioButtons[i]);
+            buttonGroup.add(radioButtons[i]);
+        }
+
+//Buttons zu Panel hinzufügen
+        panelSouth.add(buttonBackwared);
+        panelSouth.add(buttonForward);
+
+
+        //ADD Scrollpane to JFrame
+
+        scrollPane.setViewportView(label);
+        this.add(scrollPane, BorderLayout.CENTER);
+
+
+    }//ende InitComponents
+
+
+    //MAIN
     public static void main(String[] args) {
         new bildbetrachter();
     }
