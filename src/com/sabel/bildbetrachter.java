@@ -63,7 +63,7 @@ public class bildbetrachter extends JFrame {
         //Bildverzeichnis inventisieren
         directory = new File("./");
         String[] fileList = directory.list(); // nur gewissen Dateien
-        int count = fileList.length; // Die Anzahl gefundener Dateien ist nun in count
+        int count = fileList.length; // Die Anzahl gefundener Dateien ist nun in count...
         System.out.println(count);
 
 
