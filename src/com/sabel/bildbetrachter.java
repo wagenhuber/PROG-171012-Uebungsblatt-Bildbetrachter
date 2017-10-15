@@ -2,6 +2,7 @@ package com.sabel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 public class bildbetrachter extends JFrame {
 
@@ -19,6 +20,8 @@ public class bildbetrachter extends JFrame {
     private JButton buttonForward;
     private JButton buttonBackwared;
     private JScrollPane scrollPane;
+    private File directory;
+
 
 
     public bildbetrachter() {
@@ -43,9 +46,9 @@ public class bildbetrachter extends JFrame {
         //INIT ButtonGroup and Array and Icon and Scrollpane
         buttonGroup = new ButtonGroup();
         radioButtons = new JRadioButton[4];
-        icon = new ImageIcon("bild1");
-        label = new JLabel();
-        label.setIcon(icon);
+        //icon = new ImageIcon("bild1");
+        label = new JLabel(new ImageIcon(getClass().getResource("Bild1.jpg")));
+        //label.setIcon(icon);
         scrollPane = new JScrollPane(label);
         buttonForward = new JButton("Nächstes Bild");
         buttonBackwared = new JButton("Vorheriges Bild");
@@ -57,22 +60,36 @@ public class bildbetrachter extends JFrame {
         this.add(panelSouth, BorderLayout.SOUTH);
 
 
+        //Bildverzeichnis inventisieren
+        directory = new File("./");
+        String[] fileList = directory.list(); // nur gewissen Dateien
+        int count = fileList.length; // Die Anzahl gefundener Dateien ist nun in count
+        System.out.println(count);
+
+
         //INIT RadioButtons
+
+
+
+
         for (int i = 0; i < 4; i++) {
             radioButtons[i] = new JRadioButton("Bild" + (i + 1));
             panelWest.add(radioButtons[i]);
             buttonGroup.add(radioButtons[i]);
         }
 
-//Buttons zu Panel hinzufügen
+        //Buttons zu Panel hinzufügen
         panelSouth.add(buttonBackwared);
         panelSouth.add(buttonForward);
 
 
         //ADD Scrollpane to JFrame
-
-        scrollPane.setViewportView(label);
         this.add(scrollPane, BorderLayout.CENTER);
+
+
+
+
+
 
 
     }//ende InitComponents
