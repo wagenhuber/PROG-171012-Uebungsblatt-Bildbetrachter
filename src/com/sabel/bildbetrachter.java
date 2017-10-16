@@ -15,15 +15,20 @@ public class bildbetrachter extends JFrame {
     private JPanel panelWest;
     private JPanel panelCenter;
     private JPanel panelSouth;
-    private Icon icon;
-    private JLabel[] jLabels;
+    //private JLabel[] jLabels;
+    private JLabel jLabel;
     private JRadioButton[] radioButtons;
+    private ImageIcon[] imageIcons;
+
     private ButtonGroup buttonGroup;
     private JButton buttonForward;
     private JButton buttonBackwared;
     private JScrollPane scrollPane;
     private File directory;
     private int fileCount;
+
+
+    private ImageIcon imageIcon;
 
 
     public bildbetrachter() {
@@ -44,28 +49,49 @@ public class bildbetrachter extends JFrame {
         panelCenter = new JPanel();
         panelSouth = new JPanel();
 
+
         //Bildverzeichnis inventisieren
         directory = new File("C:\\Users\\guenther\\IdeaProjects\\SE3-171012-Uebungsblatt-Bildbetrachter\\src\\com\\sabel\\bilder");
         String[] fileList = directory.list();
         fileCount = fileList.length; // Die Anzahl gefundener Dateien ist nun in count...
         System.out.println(fileCount);
 
+
         //INIT ButtonGroup, RadioButtons Array, jLabels Array
         buttonGroup = new ButtonGroup();
         radioButtons = new JRadioButton[fileCount];
-        jLabels = new JLabel[fileCount];
 
 
-        for (int i = 0; i < fileCount; i++) {
+        /*jLabels = new JLabel[fileCount];*/
+       /* for (int i = 0; i < fileCount; i++) {
 
             jLabels[i] = new JLabel(new ImageIcon(getClass().getResource("./bilder/Bild" + (i + 1) + ".jpg")));
 
+        }*/
+
+
+        imageIcons = new ImageIcon[fileCount];
+
+        for (int index = 0; index < fileCount; index++) {
+
+            imageIcons[index] = new ImageIcon(getClass().getResource("./bilder/Bild" + (index + 1) + ".jpg"));
         }
 
+        jLabel = new JLabel(imageIcons[0]);
 
-        scrollPane = new JScrollPane(jLabels[0]);
+        /*imageIcon = new ImageIcon(getClass().getResource("./bilder/Bild1.jpg"));
+        jLabel = new JLabel(imageIcon);*/
+
+
+        scrollPane = new JScrollPane(jLabel);
+
+
         buttonForward = new JButton("Nächstes Bild");
+        meinActionListenerForwardButton alfb;
+        buttonForward.addActionListener(alfb = new meinActionListenerForwardButton());
+
         buttonBackwared = new JButton("Vorheriges Bild");
+
 
 
         //ADD Panels to JFrame
@@ -75,8 +101,6 @@ public class bildbetrachter extends JFrame {
 
 
         //INIT RadioButtons
-
-
         for (int i = 0; i < fileCount; i++) {
             radioButtons[i] = new JRadioButton("Bild" + (i + 1));
             meinActionListener meinal;
@@ -100,13 +124,32 @@ public class bildbetrachter extends JFrame {
     }//ende InitComponents
 
 
+
+    //Prüfung welcher RadioButton ist selected
+
+    public int getSelectedRadioButton(){
+
+
+        int index = 0;
+
+
+        while (!radioButtons[index].isSelected()){
+            index++;
+        }
+
+        return index;
+
+    }
+
+
+
+
     public class meinActionListener implements ActionListener {
 
-        int counter;
+        int i;
 
-        meinActionListener(int i) {
-
-            this.counter = i;
+        public meinActionListener(int i) {
+            this.i = i;
         }
 
 
@@ -115,8 +158,31 @@ public class bildbetrachter extends JFrame {
 
 
 
+            jLabel.setIcon(imageIcons[i]);
+
+
         }
     }
+
+
+
+    public class meinActionListenerForwardButton implements ActionListener{
+
+
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int selectRadioButton = getSelectedRadioButton();
+            if(getSelectedRadioButton() == (imageIcons.length - 1)){
+                jLabel.setIcon(imageIcons[0]);
+            }else{
+                jLabel.setIcon(imageIcons[selectRadioButton]);
+            }
+        }
+    }
+
+
+
 
 
     //MAIN
