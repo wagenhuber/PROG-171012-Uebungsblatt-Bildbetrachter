@@ -4,44 +4,74 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 
 public class bildbetrachter extends JFrame {
-
-    //ACHTUNG ICON SOLL EIN ARRAY WERDEN!!!!!!!!!!!!!!!!!!!!!!!!
 
 
     //DATENFELDER
     private JPanel panelWest;
     private JPanel panelCenter;
     private JPanel panelSouth;
-    //private JLabel[] jLabels;
+
     private JLabel jLabel;
+
     private JRadioButton[] radioButtons;
     private ImageIcon[] imageIcons;
 
     private ButtonGroup buttonGroup;
+
     private JButton buttonForward;
     private JButton buttonBackwared;
     private JScrollPane scrollPane;
-    private File directory;
-    private int fileCount;
 
+    private File directory;
+
+    private int fileCount;
 
     private ImageIcon imageIcon;
 
 
+
+
+    //Konstruktor
     public bildbetrachter() {
         super("Bilder");
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         this.setSize(400, 400);
         this.initComponents();
-
         this.setVisible(true);
 
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                exit();
+            }
+
+
+        });
     }
 
+
+    //Methoden
+
+    private void exit() {
+        int exitParameter = JOptionPane.showConfirmDialog(null, "Möchten  Sie das Programm jetzt beenden?", "Programm beenden?", JOptionPane.YES_NO_OPTION);
+        if (exitParameter == JOptionPane.YES_OPTION){
+            System.exit(0);
+        }
+    }
+
+
     private void initComponents() {
+
+        //Anzahl Bilder im Bilderverzeichnis erfassen:
+        directory = new File("C:\\Users\\guenther\\IdeaProjects\\SE3-171012-Uebungsblatt-Bildbetrachter\\src\\com\\sabel\\bilder");
+        String[] fileList = directory.list();
+        fileCount = fileList.length; // Die Anzahl gefundener Dateien ist nun in count...
+
 
         //INIT PANELs
         panelWest = new JPanel();
@@ -50,57 +80,34 @@ public class bildbetrachter extends JFrame {
         panelSouth = new JPanel();
 
 
-        //Bildverzeichnis inventisieren
-        directory = new File("C:\\Users\\guenther\\IdeaProjects\\SE3-171012-Uebungsblatt-Bildbetrachter\\src\\com\\sabel\\bilder");
-        String[] fileList = directory.list();
-        fileCount = fileList.length; // Die Anzahl gefundener Dateien ist nun in count...
-        System.out.println(fileCount);
-
-
-        //INIT ButtonGroup, RadioButtons Array, jLabels Array
+        //INIT ButtonGroup, ImageIcons-Array, RadioButtons-Array, jLabel für Bild, Scrollpane für Bildlaufleiste
         buttonGroup = new ButtonGroup();
         radioButtons = new JRadioButton[fileCount];
 
-
-        /*jLabels = new JLabel[fileCount];*/
-       /* for (int i = 0; i < fileCount; i++) {
-
-            jLabels[i] = new JLabel(new ImageIcon(getClass().getResource("./bilder/Bild" + (i + 1) + ".jpg")));
-
-        }*/
-
-
         imageIcons = new ImageIcon[fileCount];
-
         for (int index = 0; index < fileCount; index++) {
 
             imageIcons[index] = new ImageIcon(getClass().getResource("./bilder/Bild" + (index + 1) + ".jpg"));
         }
 
+        //Jlabel
         jLabel = new JLabel(imageIcons[0]);
 
-        /*imageIcon = new ImageIcon(getClass().getResource("./bilder/Bild1.jpg"));
-        jLabel = new JLabel(imageIcon);*/
-
-
+        //JScrollpane
         scrollPane = new JScrollPane(jLabel);
 
 
+        //INIT Buttons im Bereich South und ActionListener angefügt
         buttonForward = new JButton("Nächstes Bild");
         meinActionListenerForwardButton alfb;
         buttonForward.addActionListener(alfb = new meinActionListenerForwardButton());
 
         buttonBackwared = new JButton("Vorheriges Bild");
+        meinActionListenerBackwardButton albb;
+        buttonBackwared.addActionListener(albb = new meinActionListenerBackwardButton());
 
 
-
-        //ADD Panels to JFrame
-        this.add(panelWest, BorderLayout.WEST);
-        this.add(panelCenter);
-        this.add(panelSouth, BorderLayout.SOUTH);
-
-
-        //INIT RadioButtons
+        //INIT RadioButtons + ADD RadioButtions to JFRAME
         for (int i = 0; i < fileCount; i++) {
             radioButtons[i] = new JRadioButton("Bild" + (i + 1));
             meinActionListener meinal;
@@ -112,50 +119,51 @@ public class bildbetrachter extends JFrame {
         radioButtons[0].setSelected(true);
 
 
-        //Buttons zu Panel hinzufügen
-        panelSouth.add(buttonBackwared);
-        panelSouth.add(buttonForward);
-
+        //ADD Panels to JFrame
+        this.add(panelWest, BorderLayout.WEST);
+        this.add(panelCenter);
+        this.add(panelSouth, BorderLayout.SOUTH);
 
         //ADD Scrollpane to JFrame
         this.add(scrollPane, BorderLayout.CENTER);
+
+        //ADD Buttons to Panel
+        panelSouth.add(buttonBackwared);
+        panelSouth.add(buttonForward);
+
 
 
     }//ende InitComponents
 
 
 
-    //Prüfung welcher RadioButton ist selected
-
-    public int getSelectedRadioButton(){
 
 
+
+
+    //Prüfung welcher RadioButton ist ausgewählt
+    public int getSelectedRadioButton() {
         int index = 0;
-
-
-        while (!radioButtons[index].isSelected()){
+        while (!radioButtons[index].isSelected()) {
             index++;
         }
-
         return index;
-
     }
 
 
+    //Innere Klassen:
 
 
+    //Innere Klasse - für ActionListener RadioButtons
     public class meinActionListener implements ActionListener {
-
         int i;
 
         public meinActionListener(int i) {
             this.i = i;
         }
 
-
         @Override
         public void actionPerformed(ActionEvent e) {
-
 
 
             jLabel.setIcon(imageIcons[i]);
@@ -165,24 +173,38 @@ public class bildbetrachter extends JFrame {
     }
 
 
-
-    public class meinActionListenerForwardButton implements ActionListener{
-
-
+    //Innere Klasse - für ActionListener ButtonForward
+    public class meinActionListenerForwardButton implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             int selectRadioButton = getSelectedRadioButton();
-            if(getSelectedRadioButton() == (imageIcons.length - 1)){
+            if (getSelectedRadioButton() == (imageIcons.length - 1)) {
                 jLabel.setIcon(imageIcons[0]);
-            }else{
-                jLabel.setIcon(imageIcons[selectRadioButton]);
+                radioButtons[0].setSelected(true);
+            } else {
+                jLabel.setIcon(imageIcons[(selectRadioButton + 1)]);
+                radioButtons[(selectRadioButton + 1)].setSelected(true);
             }
         }
     }
 
 
+    //Innere Klasse - für ActionListener ButtonBackward
+    public class meinActionListenerBackwardButton implements ActionListener {
 
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int selectRadioButton = getSelectedRadioButton();
+            if (getSelectedRadioButton() == (imageIcons.length - imageIcons.length)) {
+                jLabel.setIcon(imageIcons[(imageIcons.length - 1)]);
+                radioButtons[(radioButtons.length - 1)].setSelected(true);
+            } else {
+                jLabel.setIcon(imageIcons[(selectRadioButton - 1)]);
+                radioButtons[(selectRadioButton - 1)].setSelected(true);
+            }
+        }
+    }
 
 
     //MAIN
