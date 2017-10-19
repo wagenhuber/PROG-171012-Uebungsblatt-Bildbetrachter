@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="171012-Uebungsblatt-Bildbetrachter-GW:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/171012_Uebungsblatt_Bildbetrachter_GW_jar</output-path>
+    <root id="archive" name="171012-Uebungsblatt-Bildbetrachter-GW.jar">
+      <element id="module-output" name="171012-Uebungsblatt-Bildbetrachter-GW" />
+    </root>
+  </artifact>
+</component>

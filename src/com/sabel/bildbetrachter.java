@@ -41,9 +41,9 @@ public class bildbetrachter extends JFrame {
         super("Bilder");
         this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         this.setSize(400, 400);
+        this.setResizable(false);
         this.initComponents();
         this.setVisible(true);
-
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -58,9 +58,9 @@ public class bildbetrachter extends JFrame {
     //Methoden
 
     private void exit() {
-        int exitParameter = JOptionPane.showConfirmDialog(null, "Möchten  Sie das Programm jetzt beenden?", "Programm beenden?", JOptionPane.YES_NO_OPTION);
-        if (exitParameter == JOptionPane.YES_OPTION){
-            System.exit(0);
+        int exitParameter = JOptionPane.showConfirmDialog(bildbetrachter.this, "Möchten  Sie das Programm jetzt beenden?", "Programm beenden?", JOptionPane.YES_NO_OPTION);
+        if (exitParameter == JOptionPane.YES_OPTION){//ist eine KONSTANTE und kann daher einfach abegefragt werden!!!
+            System.exit(NORMAL);
         }
     }
 
@@ -68,7 +68,10 @@ public class bildbetrachter extends JFrame {
     private void initComponents() {
 
         //Anzahl Bilder im Bilderverzeichnis erfassen:
-        directory = new File("C:\\Users\\guenther\\IdeaProjects\\SE3-171012-Uebungsblatt-Bildbetrachter\\src\\com\\sabel\\bilder");
+        directory = new File("C:\\Users\\wagenhuberg\\IdeaProjects\\171012-Uebungsblatt-Bildbetrachter-GW\\src\\com\\sabel\\bilder");
+        //directory = new File("src\\com\\sabel\\bilder");
+        //directory = new File(directory.getAbsolutePath());
+        System.out.println(directory.getAbsolutePath());
         String[] fileList = directory.list();
         fileCount = fileList.length; // Die Anzahl gefundener Dateien ist nun in count...
 
@@ -88,6 +91,7 @@ public class bildbetrachter extends JFrame {
         for (int index = 0; index < fileCount; index++) {
 
             imageIcons[index] = new ImageIcon(getClass().getResource("./bilder/Bild" + (index + 1) + ".jpg"));
+            //imageIcons[index] = new ImageIcon(getClass().getResource(+"Bild" + (index + 1) + ".jpg"));
         }
 
         //Jlabel
