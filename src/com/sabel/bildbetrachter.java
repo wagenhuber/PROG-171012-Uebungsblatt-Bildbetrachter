@@ -69,9 +69,13 @@ public class bildbetrachter extends JFrame {
 
         //Anzahl Bilder im Bilderverzeichnis erfassen:
         directory = new File("C:\\Users\\wagenhuberg\\IdeaProjects\\171012-Uebungsblatt-Bildbetrachter-GW\\src\\com\\sabel\\bilder");
-        //directory = new File("src\\com\\sabel\\bilder");
-        //directory = new File(directory.getAbsolutePath());
-        System.out.println(directory.getAbsolutePath());
+        File directory2 = new File("bilder");
+        System.out.println("TEST:"+" "+ directory2);
+        System.out.println("TEST:"+" "+ directory);
+
+        //System.out.println(directory.getAbsolutePath());
+
+
         String[] fileList = directory.list();
         fileCount = fileList.length; // Die Anzahl gefundener Dateien ist nun in count...
 
@@ -90,7 +94,7 @@ public class bildbetrachter extends JFrame {
         imageIcons = new ImageIcon[fileCount];
         for (int index = 0; index < fileCount; index++) {
 
-            imageIcons[index] = new ImageIcon(getClass().getResource("./bilder/Bild" + (index + 1) + ".jpg"));
+            imageIcons[index] = new ImageIcon(getClass().getResource("/bilder/Bild" + (index + 1) + ".jpg"));
             //imageIcons[index] = new ImageIcon(getClass().getResource(+"Bild" + (index + 1) + ".jpg"));
         }
 
